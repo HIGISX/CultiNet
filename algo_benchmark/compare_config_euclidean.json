@@ -1,0 +1,100 @@
+{
+  "output_dir": "../results/benchmark",
+  "M_list": [
+    30,
+    50,
+    70
+  ],
+  "n_runs": 20,
+  "seed_start": 101,
+  "service_min": 15.0,
+  "service_radius_m": null,
+  "weights": [
+    0.35,
+    0.4,
+    0.25
+  ],
+  "site_capacity": 1,
+  "priority_share": 0.3,
+  "algorithms": [
+    "Gurobi",
+    "OR-Tools",
+    "PSO",
+    "GA",
+    "SA",
+    "NSGA-II"
+  ],
+  "exact": {
+    "time_limit_s": 600,
+    "threads": 1,
+    "linearization_level": 2,
+    "integer_scale": 1000000000000,
+    "certificate_abs_tolerance": 1e-08
+  },
+  "heuristics": {
+    "PSO": {
+      "num_particles": 500,
+      "max_iter": 200,
+      "inertia": 0.8,
+      "cognitive_coeff": 1.0,
+      "social_coeff": 0.5
+    },
+    "GA": {
+      "iterations": 400,
+      "generation_size": 100,
+      "reproduction_size": 40,
+      "mutation_prob": 0.2
+    },
+    "SA": {
+      "T0": 0.01,
+      "max_iter": 2000,
+      "stopping_T": 1e-06,
+      "alpha": 0.995405417351527
+    },
+    "NSGA-II": {
+      "population_size": 200,
+      "generations": 80,
+      "mutation_prob": 0.2
+    }
+  },
+  "synthetic": {
+    "data_dir": "../data/synthetic",
+    "heritage_min": 10.0,
+    "walk_speed_m_per_min": 75.0,
+    "generation": {
+      "n_demand": 1000,
+      "n_candidate": 200,
+      "n_heritage": 60,
+      "span_m": 15000,
+      "total_population": 1000000,
+      "seed": 42
+    },
+    "euclidean_river_policy": "preserve_baseline_path_constraint"
+  },
+  "real": {
+    "data_dir": "../data/xian",
+    "heritage_min": 30.0,
+    "walk_speed_m_per_min": 80.0,
+    "priority_alpha": "auto_median",
+    "linkage": "distance+theme",
+    "coordinate_crs": "EPSG:4545"
+  },
+  "parameter_profile": "tuned_native_parameters",
+  "tuning_plan_signature": "3e7cc4f7c0a011bf418cc733947e17665467cd394dc5e649d6cdb487dfc3d3c3",
+  "target_gap_pct": 10,
+  "validation_seed_range": [
+    101,
+    120
+  ],
+  "experiment_label": "euclidean_all_distance_inputs_recomputed",
+  "parent_tuning_plan_signature": "6891edad372407ebc7efd5baed22321c0f6fe784658b2a37de50f5096f375ca9",
+  "desired_gap_band_pct": [
+    3,
+    10
+  ],
+  "lower_gap_bound_enforced": false,
+  "distance_metric": "euclidean",
+  "priority_distance_metric": "euclidean",
+  "data_layout": "aligned_point_tables",
+  "parameter_provenance": "Frozen fully Euclidean benchmark configuration from compare_config_euclidean.json; numerical search parameters unchanged."
+}

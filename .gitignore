@@ -1,0 +1,30 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+gurobi.lic
+*.pem
+*.key
+
+# Generated output, caches and model weights are not part of this release
+/results/
+/outputs/
+/logs/
+/algo_benchmark/cache/
+/legacy_model/results/
+/legacy_model/outputs/
+*.pt
+*.pth
+*.ckpt
+*.log
+*.zip

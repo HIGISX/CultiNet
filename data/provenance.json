@@ -1,0 +1,79 @@
+{
+  "format": "aligned_point_tables",
+  "export_note": "Minimal CSV projection and ID alignment only. No new reproduction run or package validation was performed at user request.",
+  "datasets": {
+    "synthetic": {
+      "coordinate_system": "synthetic planar Cartesian",
+      "coordinate_authority": null,
+      "coordinate_unit": "metre",
+      "n_demand": 1000,
+      "n_candidate": 200,
+      "n_heritage": 60,
+      "historically_recorded_A_pairs": 7534,
+      "historically_recorded_B_pairs": 236,
+      "historically_recorded_priority_mask_sha256": "611ec3416d3ad822d535d8d5d0e2d664324b2b7ead1e1988e795ab1e9715f819",
+      "historical_sources": {
+        "demand_points.csv": {
+          "size": 119538,
+          "sha256": "7ca575cc17b1c10d1a0d2c5729e295fc56c0895bf03669201a620cb43c4e9801"
+        },
+        "candidate_points.csv": {
+          "size": 28286,
+          "sha256": "89bb62b37707ac615b792c20d6a6c05bcde35bf92c609e61aa055957ea9c74c0"
+        },
+        "heritage_points.csv": {
+          "size": 6703,
+          "sha256": "82a529bd70ef3c5e89124f283f224d4ff30d68ecf15da16a8859ef633459e53b"
+        },
+        "od_heritage_candidate.csv": {
+          "size": 363540,
+          "sha256": "a330f684328fa238356cb35ba1a2cab138e1d19fcbb842c73fc7f3da1a53265c"
+        }
+      }
+    },
+    "real": {
+      "coordinate_system": "CGCS2000 / 3-degree Gauss-Kruger CM 108E",
+      "coordinate_authority": [
+        "EPSG",
+        "4545"
+      ],
+      "coordinate_unit": "metre",
+      "n_demand": 7685,
+      "n_candidate": 587,
+      "n_heritage": 297,
+      "historically_recorded_A_pairs": 2614,
+      "historically_recorded_B_pairs": 1735,
+      "historically_recorded_priority_mask_sha256": "fccf558d8f6350cd57bc88a4996bf8a369a7fc556c58488df11cabac8bd3505b",
+      "historical_sources": {
+        "demand_points.csv": {
+          "size": 254219,
+          "sha256": "5c066d02552bfa229e5ebe0dbef4a771bee78f3019a36ea0a02d2ea97ddb5a9e"
+        },
+        "candidate_points.csv": {
+          "size": 147614,
+          "sha256": "f5248a24eb3951303fef481a21880f6c93a137cab489f7d9e320f9e78434d47a"
+        },
+        "heritage_points.csv": {
+          "size": 74626,
+          "sha256": "14c544d2bb74b03bd4a179233cd57b07961787e066b3113539828eac04cc3076"
+        },
+        "point_id_crosswalk_demand.csv": {
+          "size": 386892,
+          "sha256": "c52701ea62638a6cffbee68e22703c5ba13e299935b7db1678036e90c489f9bc"
+        },
+        "point_id_crosswalk_candidate.csv": {
+          "size": 30943,
+          "sha256": "ceaccb1e0184e03fded3fa8a32cad1225196bd10afc7effc3ac18886128d31ae"
+        },
+        "point_id_crosswalk_heritage.csv": {
+          "size": 15628,
+          "sha256": "bf97551f1773b8bce7129a4938bc98894f261804eff0bf955791471f329bee29"
+        },
+        "demand.prj": {
+          "size": 432,
+          "sha256": "d3aae5e0919a041c1f095b8ce3db97896c7cbd079e7be61b9ef7dec0d4c54781"
+        }
+      }
+    }
+  }
+}

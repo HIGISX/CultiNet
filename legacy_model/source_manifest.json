@@ -1,0 +1,65 @@
+{
+  "description": "Exact copies of the archived neural model source. Historical training data and checkpoints are not included. No model or algorithm changes.",
+  "files": [
+    {
+      "path": "run.py",
+      "sha256": "9d8459581bf582c138d5b7f45f3cc38675be2d954de212f41a8db3a13593f5ae"
+    },
+    {
+      "path": "options.py",
+      "sha256": "2c152280003cb8823d136562f7aa3d5edd5b5b00f7f23ef903db6afb792c46b8"
+    },
+    {
+      "path": "train.py",
+      "sha256": "589085ee8625aaeffde3300ed72928d6feea34ba7cd05ff6a669bf990487861a"
+    },
+    {
+      "path": "nets/CacheFormer.py",
+      "sha256": "470af44fd088bb775e75484119931a854012342070c176209e327d81862207fd"
+    },
+    {
+      "path": "nets/FacilitiesRepresentationEncoder.py",
+      "sha256": "d3f880be013e83435db49d94c7d836841c0da53f512fc8f989cc9e7b577a2a88"
+    },
+    {
+      "path": "nets/reinforce_baselines.py",
+      "sha256": "c96091086b70769050019af13330f98a21eeb240e4d8952005f2b8ff946f24af"
+    },
+    {
+      "path": "problems/__init__.py",
+      "sha256": "daa67abdfcaa9287037c7bb3d62ed2937d676a084a3e313a6ef53b2bc7652509"
+    },
+    {
+      "path": "problems/MCLP/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "problems/MCLP/problem_MCLP.py",
+      "sha256": "fb5acead20fc174601d3277be8fe0f30141e8ab751eed0e464d3719775726d74"
+    },
+    {
+      "path": "problems/MCLP/state_MCLP.py",
+      "sha256": "bf95ee2424533f9e807900be886cb3ae73708bb0104a5b5c74b59d0826875f1c"
+    },
+    {
+      "path": "utils/__init__.py",
+      "sha256": "e6e488e8f2a8972817e3a8ed9949d949b75a4f88182118c27dcf0bffd8c1d9c2"
+    },
+    {
+      "path": "utils/functions.py",
+      "sha256": "68416f99dd278c1bc7e41c895174f697e7d7f8e109d7e6a8bcec0b0fa77e3495"
+    },
+    {
+      "path": "utils/boolmask.py",
+      "sha256": "64b935cafc3a82dec3cf0bbcaad80a63e2a24f868dccb994bc44aea3c9708ecf"
+    },
+    {
+      "path": "utils/data_utils.py",
+      "sha256": "8849e48aac943a44d34572725ad14c0f68dbbe95f39cf73e96b0106da8d8109c"
+    },
+    {
+      "path": "utils/log_utils.py",
+      "sha256": "84741f2898f7695375c11d702158570b324b6db61769dd2fd0998ae91abe9bdf"
+    }
+  ]
+}

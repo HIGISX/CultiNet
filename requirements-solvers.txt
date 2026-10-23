@@ -1,0 +1,3 @@
+-r requirements.txt
+gurobipy==13.0.1
+ortools==9.15.6755
