@@ -4,5 +4,5 @@
 *.json text eol=lf
 *.csv text eol=lf
 *.npz binary
-# Preserve the byte-for-byte archived source and its recorded checksums.
-legacy_model/** -text
+# Preserve model source files and their recorded checksums.
+model/** -text

@@ -1,28 +1,26 @@
 # CultiNet
 
-A compact release of the CultiNet project, including the data and code for Euclidean EH-MCLP baseline comparisons, objective-weight sensitivity and ablation experiments, and the original neural-model source.
-
-**Pretrained weights are not included.** The six-method benchmark runs Gurobi, OR-Tools, PSO, GA, SA, and NSGA-II. The neural-model source is provided separately in [`legacy_model/`](legacy_model/README.md).
+Code and benchmark data for CultiNet, a cultural-facility location optimization project. The repository includes model source, synthetic and Xi'an datasets, algorithm comparisons, and objective-weight sensitivity and ablation experiments.
 
 ## Repository layout
 
 ```text
 CultiNet/
 ├── algo_benchmark/          # Experiment runners, configuration and shared objective
-├── Algorithm/              # Existing GA, PSO, SA and NSGA-II implementations
+├── Algorithm/              # GA, PSO, SA and NSGA-II implementations
 ├── data/                   # Minimal inputs for the synthetic and Xi'an cases
-├── legacy_model/           # Original neural-model and training source
-├── reference/              # Existing experiment results and selected locations
+├── model/                  # Neural-model architecture and training source
+├── reference/              # Experiment results and selected locations
 ├── requirements.txt        # Dependencies for the four stochastic baselines
 ├── requirements-solvers.txt
 └── requirements-model.txt
 ```
 
-The Euclidean experiments use relative paths and do not require the original machine's data directories, large road-network OD files, GIS software, or cached matrices. See [`data/README.md`](data/README.md) for the input fields and preprocessing rules.
+The experiments use the supplied data through relative paths. See [`data/README.md`](data/README.md) for the input fields, coordinates, and preprocessing rules.
 
 ## Installation
 
-The existing experiments used **Python 3.12.10**. Clone the repository and create a virtual environment:
+Use **Python 3.12**. Clone the repository and create a virtual environment:
 
 ```bash
 git clone https://github.com/HIGISX/CultiNet.git
@@ -51,7 +49,11 @@ python -m pip install -r requirements-solvers.txt
 
 For PSO, GA, SA, and NSGA-II only, install `requirements.txt` instead. Gurobi requires a license that supports the problem size; installing `gurobipy` does not configure that license. OR-Tools does not require a Gurobi license.
 
-The optional neural-model dependencies are listed in `requirements-model.txt`. They are separate from the EH-MCLP benchmark dependencies.
+For the neural-model source, install its dependencies with:
+
+```bash
+python -m pip install -r requirements-model.txt
+```
 
 ## Reproducing the experiments
 
@@ -104,7 +106,7 @@ Both weight experiments require an output directory that does not already exist.
 
 The comparison produces `table_synthetic.csv`, `table_real.csv`, `runs.csv`, `summary.json`, `checkpoint.json`, and experiment metadata. Weight experiments produce `results.csv`, `solutions.json`, and `protocol.json`; ablation also exports `selected_sites.csv` and `table.md`.
 
-[`reference/`](reference/README.md) contains existing summary tables and individual selections. Runtime depends on the hardware, software versions, and solver environment. Alternative optimal selections may differ while achieving the same objective.
+[`reference/`](reference/README.md) contains summary tables and individual selections. Runtime depends on the hardware, software versions, and solver environment.
 
 ## Configuration and model definition
 
@@ -148,13 +150,9 @@ Edit the JSON configuration or override supported settings on the command line:
 python -u -X utf8 algo_benchmark/run_comparison.py --m 30 --runs 5 --seed-start 101 --radius-m 1200 --output results/custom
 ```
 
-## Neural-model source and reproduction scope
+## Model source
 
-[`legacy_model/`](legacy_model/README.md) preserves the original `run.py`, `train.py`, `options.py`, `nets/`, `problems/`, and `utils/`. Its README describes the input interface and historical training-data requirements. Pretrained weights and the original training datasets are not included.
-
-The six-method EH-MCLP runner does not perform neural-model inference. The archived neural source uses a different coverage/distance objective and has not been converted to the three-component EH-MCLP objective. The CultiNet locations in `reference/user_M30_location_sets.json` were supplied directly as point sequences for tracing the location figures; they are not newly generated predictions. The weight experiments concern objective preferences rather than neural architecture ablations.
-
-This release packages existing source, data, and results. Training, experiments, and tests were not rerun during release preparation.
+[`model/`](model/README.md) contains `run.py`, `train.py`, `options.py`, and the `nets/`, `problems/`, and `utils/` modules. See its README for the model input format and data paths. Architecture and decoding are implemented in `nets/CacheFormer.py` and `nets/FacilitiesRepresentationEncoder.py`; training options are defined in `options.py`.
 
 ## Updating the GitHub repository
 
@@ -166,4 +164,6 @@ git commit -m "Update CultiNet"
 git push origin main
 ```
 
-Generated outputs and model weights are excluded by `.gitignore`. The repository's existing [MIT license](LICENSE) is preserved; data permissions and attribution requirements remain subject to their original sources.
+## License
+
+See [LICENSE](LICENSE).

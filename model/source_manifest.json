@@ -1,5 +1,5 @@
 {
-  "description": "Exact copies of the archived neural model source. Historical training data and checkpoints are not included. No model or algorithm changes.",
+  "description": "CultiNet model source files and SHA-256 checksums.",
   "files": [
     {
       "path": "run.py",

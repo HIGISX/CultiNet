@@ -21,8 +21,8 @@ gurobi.lic
 /outputs/
 /logs/
 /algo_benchmark/cache/
-/legacy_model/results/
-/legacy_model/outputs/
+/model/results/
+/model/outputs/
 *.pt
 *.pth
 *.ckpt
