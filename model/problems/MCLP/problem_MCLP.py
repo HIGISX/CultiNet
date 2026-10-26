@@ -11,82 +11,95 @@ from problems.MCLP.state_MCLP import StateMCLP
 
 class MCLP(object):
     NAME = 'MCLP'
+
     @staticmethod
     def get_total_num(dataset, pi):
+        """Return the EF-MCLP objective value for each batch item.
+
+        For every user, at most one selected facility may provide service.  The
+        chosen facility is the one with the largest complete net contribution
+
+            w1 * demand_j * F(distance_ij) - w2 * distance_ij.
+
+        A user may remain unassigned, so a negative contribution is replaced
+        by zero.  This is the batched PyTorch equivalent of the assignment
+        variables and objective used by the Gurobi EF-MCLP model.
+        """
         w1 = 0.6
         w2 = 0.4
         da = 1000 / 38686.093359901104
         db = 2000 / 38686.093359901104
+
         users = dataset['users']
         facilities = dataset['facilities']
-        demand = dataset['demand']  # 假设形状为 [batch_size, n_user, 1]
-        radius = dataset['r'][0]
+        demand = dataset['demand']
+        radius = dataset['r']
+
         batch_size, n_user, _ = users.size()
         _, n_facilities, _ = facilities.size()
-        _, p = pi.size()
 
-        # 计算距离
-        # dist = (facilities[:, :, None, :] - users[:, None, :, :]).norm(p=2, dim=-1)
-        dist = (facilities[:, :, None, :2] - users[:, None, :, :]).norm(p=2, dim=-1)
+        if pi.dim() != 2 or pi.size(0) != batch_size:
+            raise ValueError("pi must have shape [batch_size, p]")
+        if pi.size(1) == 0:
+            return torch.zeros(batch_size, dtype=users.dtype, device=users.device)
+        pi = pi.to(device=users.device, dtype=torch.long)
+        if torch.any((pi < 0) | (pi >= n_facilities)):
+            raise ValueError("pi contains a facility index outside the valid range")
 
-        # 获取选中的设施与用户之间的距离
+        if demand.dim() == 3 and demand.size(-1) == 1:
+            demand = demand.squeeze(-1)
+        if demand.shape != (batch_size, n_user):
+            raise ValueError("demand must have shape [batch_size, n_user] or [batch_size, n_user, 1]")
+        demand = demand.to(device=users.device, dtype=users.dtype)
+
+        # Coordinates may be followed by extra facility/user features; only x
+        # and y participate in the Euclidean service distance.
+        dist = (
+            facilities[:, :, None, :2] - users[:, None, :, :2]
+        ).norm(p=2, dim=-1)
+
         facility_tensor = pi.unsqueeze(-1).expand(-1, -1, n_user)
         f_u_dist_tensor = dist.gather(1, facility_tensor)
 
-        # 计算覆盖情况
-        mask = f_u_dist_tensor < radius
+        radius = torch.as_tensor(radius, dtype=dist.dtype, device=dist.device)
+        if radius.numel() == 1:
+            radius = radius.reshape(())
+        elif radius.numel() == batch_size:
+            radius = radius.reshape(batch_size, 1, 1)
+        else:
+            raise ValueError("r must be a scalar or contain one radius per batch item")
+        coverage_mask = f_u_dist_tensor <= radius
 
-        def F(dij, da, db):
-            result = torch.zeros_like(dij)
-            mask1 = dij <= da
-            mask2 = (dij > da) & (dij <= db)
-            mask3 = dij > db
+        if db <= da:
+            raise ValueError("db must be greater than da")
 
-            result[mask1] = 1.0
-            if (db - da) > 1e-8:  # 避免除以零
-                angle = (math.pi / (db - da)) * (dij[mask2] - (da + db) / 2) + math.pi / 2
-                result[mask2] = 0.5 * torch.cos(angle) + 0.5
-            result[mask3] = 0.0
-            return result
+        transition = 0.5 * torch.cos(
+            (math.pi / (db - da))
+            * (f_u_dist_tensor - (da + db) / 2)
+            + math.pi / 2
+        ) + 0.5
+        f_dij = torch.where(
+            f_u_dist_tensor <= da,
+            torch.ones_like(f_u_dist_tensor),
+            torch.where(
+                f_u_dist_tensor <= db,
+                transition,
+                torch.zeros_like(f_u_dist_tensor),
+            ),
+        )
 
-        F_dij = F(f_u_dist_tensor, da, db)
+        # Mask before reducing.  Multiplication by a 0/1 mask would make an
+        # invalid pair look like a valid zero-valued assignment.
+        pair_scores = (
+            w1 * demand.unsqueeze(1) * f_dij
+            - w2 * f_u_dist_tensor
+        )
+        pair_scores = pair_scores.masked_fill(~coverage_mask, -torch.inf)
 
-
-        w_j = demand.squeeze(-1)
-
-        # coverage_sum = (F_dij * mask).max(dim=1)[0]
-        # print(f"coverage_sum: {coverage_sum},coverage_sum.min: {coverage_sum.min()}, coverage_sum.max: {coverage_sum.max()}")
-        #
-        # term1_sum = (w_j * (F_dij * mask).max(dim=1)[0]).sum(dim=1)  # [batch_size]
-        #
-        # term2 = (f_u_dist_tensor * mask.float()).sum(dim=(1, 2))  # [batch_size]
-        #
-        # # 5. 组合目标函数
-        # weighted_covernum = w1 * term1_sum - w2 * term2
-        #
-        # return weighted_covernum
-
-        # 1. 计算每个用户的最大收益值，以及提供该值的设施索引
-        F_masked = F_dij * mask.float()  # [batch, p, n_user]
-        best_F_values, best_facility_indices = F_masked.max(dim=1)  # [batch, n_user]
-
-        # 2. 计算收益项 (您的 term1_sum 逻辑已经等价于此，可以保持)
-        term1_sum = (w_j * best_F_values).sum(dim=1)  # [batch_size]
-
-        # 3. 根据找到的最佳设施索引，提取对应的距离
-        # f_u_dist_tensor 的形状是 [batch, p, n_user]
-        # 我们需要从 p 这个维度上，根据 best_facility_indices 来选择距离
-        best_distances = f_u_dist_tensor.gather(1, best_facility_indices.unsqueeze(1)).squeeze(1)  # [batch, n_user]
-
-        # 4. 对于未被覆盖的用户，其距离成本应为0
-        # best_F_values > 0 可以作为用户是否被覆盖的判断依据
-        covered_mask = (best_F_values > 0).float()
-        term2_sum = (best_distances * covered_mask).sum(dim=1)  # [batch_size]
-
-        # 5. 组合目标函数
-        weighted_covernum = w1 * term1_sum - w2 * term2_sum
-
-        return weighted_covernum
+        # The assignment constraint is "at most one", not "exactly one".
+        # Hence leaving a user unserved (contribution 0) must remain possible.
+        best_user_scores = pair_scores.max(dim=1).values.clamp_min(0.0)
+        return best_user_scores.sum(dim=1)
 
     # @staticmethod
     # def get_total_num(dataset, pi):
