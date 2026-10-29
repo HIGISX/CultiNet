@@ -4,7 +4,7 @@ This directory contains the coordinates, population, IDs, site constraints, and 
 
 | Dataset | Demand points D | Candidates N | Heritage sites H | Total population | Default coverage radius | Heritage linkage radius |
 |---|---:|---:|---:|---:|---:|---:|
-| `synthetic/` | 1,000 | 200 | 60 | 1,000,000 | 1,125 m | 750 m |
+| `synthetic/` | 10,000 | 2,000 | 600 | 1,000,000 | 1,125 m | 750 m |
 | `xian/` | 7,685 | 587 | 297 | 6,437,381 | 1,200 m | 2,400 m |
 
 Both datasets use a default coverage time of 15 minutes, converted to distance at 75 m/min for Synthetic and 80 m/min for Xi'an. Xi'an coordinates use the projected metric CRS EPSG:4545. Synthetic coordinates were converted from their original normalized values by multiplying by 15,000 m. All distances are calculated within each dataset's shared metric plane.
@@ -30,10 +30,6 @@ For Synthetic, B requires distance within the linkage threshold, program compati
 The opportunity index is `O_i = sum_h w_h * exp(-alpha * euclidean_walking_minutes(i,h))`. Synthetic uses `alpha=0.05`; Xi'an uses `alpha=ln(2)/median(all positive Euclidean D-H walking times in minutes)`. Demand points are stably sorted by increasing O, and U is the prefix whose cumulative population is closest to 30% of the total. U remains fixed across algorithms, facility counts, and objective-weight scenarios.
 
 The main experiment uses `F = 0.35 F1 + 0.40 F2 + 0.25 F3`. The three components are normalized by total population, population in U, and total heritage weight, respectively. Exactly M eligible candidates are selected, with at most one candidate per `site_id` by default. Weight sensitivity and ablation experiments change only the objective weights.
-
-## Source Metadata
-
-`provenance.json` records source-file SHA-256 hashes, A/B nonzero counts, and the U hash from the Euclidean benchmark. At runtime, `dataset_metadata.json` records SHA-256 hashes of the input files and A/B/U arrays.
 
 ## Run the Experiments
 

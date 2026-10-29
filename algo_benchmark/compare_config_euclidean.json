@@ -62,9 +62,9 @@
     "heritage_min": 10.0,
     "walk_speed_m_per_min": 75.0,
     "generation": {
-      "n_demand": 1000,
-      "n_candidate": 200,
-      "n_heritage": 60,
+      "n_demand": 10000,
+      "n_candidate": 2000,
+      "n_heritage": 600,
       "span_m": 15000,
       "total_population": 1000000,
       "seed": 42

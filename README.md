@@ -126,7 +126,7 @@ The default configuration is [`algo_benchmark/compare_config_euclidean.json`](al
 
 | Dataset | Demand points | Candidate facilities | Heritage sites | Service radius |
 |---|---:|---:|---:|---:|
-| Synthetic | 1,000 | 200 | 60 | 1,125 m |
+| Synthetic | 10,000 | 2,000 | 600 | 1,125 m |
 | Xi'an | 7,685 | 587 | 297 | 1,200 m |
 
 Xi'an uses projected coordinates in metres: CGCS2000 / 3-degree Gauss-Kruger CM 108E (**EPSG:4545**). The synthetic coordinates are expressed in a planar metric system.

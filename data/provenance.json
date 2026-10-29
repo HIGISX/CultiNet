@@ -1,33 +1,39 @@
 {
   "format": "aligned_point_tables",
-  "export_note": "Minimal CSV projection and ID alignment only. No new reproduction run or package validation was performed at user request.",
   "datasets": {
     "synthetic": {
       "coordinate_system": "synthetic planar Cartesian",
       "coordinate_authority": null,
       "coordinate_unit": "metre",
-      "n_demand": 1000,
-      "n_candidate": 200,
-      "n_heritage": 60,
-      "historically_recorded_A_pairs": 7534,
-      "historically_recorded_B_pairs": 236,
-      "historically_recorded_priority_mask_sha256": "611ec3416d3ad822d535d8d5d0e2d664324b2b7ead1e1988e795ab1e9715f819",
+      "n_demand": 10000,
+      "n_candidate": 2000,
+      "n_heritage": 600,
+      "generation": {
+        "n_demand": 10000,
+        "n_candidate": 2000,
+        "n_heritage": 600,
+        "span_m": 15000,
+        "total_population": 1000000,
+        "seed": 42
+      },
       "historical_sources": {
-        "demand_points.csv": {
-          "size": 119538,
-          "sha256": "7ca575cc17b1c10d1a0d2c5729e295fc56c0895bf03669201a620cb43c4e9801"
-        },
         "candidate_points.csv": {
-          "size": 28286,
-          "sha256": "89bb62b37707ac615b792c20d6a6c05bcde35bf92c609e61aa055957ea9c74c0"
+          "sha256": "24abcd0c3e3fd90148ef5f8f823f871b10a8ca2742b5253a1204cc1ca0494045"
+        },
+        "demand_points.csv": {
+          "sha256": "20a07f98d038a910794ae04bb8612b81c5d1320c7ad41660aa7ddfee41c03a41"
         },
         "heritage_points.csv": {
-          "size": 6703,
-          "sha256": "82a529bd70ef3c5e89124f283f224d4ff30d68ecf15da16a8859ef633459e53b"
+          "sha256": "b482197c53d04c64275d8c47a21af0b68c336a4fe111617b3b429185fc841c0f"
+        },
+        "od_demand_candidate.csv": {
+          "sha256": "0193f546e26704364ea5bc69531dfe9e001f00c6b1913597e96753034b94e2e7"
+        },
+        "od_demand_heritage.csv": {
+          "sha256": "cd3351bef6eff898530336ca871ef1c794e73999bc710447ff648ce587967530"
         },
         "od_heritage_candidate.csv": {
-          "size": 363540,
-          "sha256": "a330f684328fa238356cb35ba1a2cab138e1d19fcbb842c73fc7f3da1a53265c"
+          "sha256": "b68f25ae9ff9d76f9ae65d8f7233177b22255299646cbf11a974adf173696081"
         }
       }
     },
